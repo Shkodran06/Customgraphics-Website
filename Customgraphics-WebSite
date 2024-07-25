@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customgraphics</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap');
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Courier Prime', monospace;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .fade-in-out {
+            opacity: 0;
+            text-align: center;
+            font-size: 3em;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .fade-in-out.show {
+            opacity: 1;
+        }
+
+        .enlarge-shrink {
+            font-size: 3em;
+            text-align: center;
+            animation: enlarge-shrink 4s forwards;
+        }
+
+        @keyframes enlarge-shrink {
+            0% {
+                font-size: 1em;
+                opacity: 0;
+            }
+            25% {
+                font-size: 3em;
+                opacity: 1;
+            }
+            50% {
+                font-size: 5em;
+            }
+            75% {
+                font-size: 3em;
+                opacity: 1;
+            }
+            100% {
+                font-size: 1em;
+                opacity: 0;
+            }
+        }
+
+        .form-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-container.show {
+            display: block;
+        }
+
+        .table-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .table-container.show {
+            display: block;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #f8f9fa;
+            color: black;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        table thead {
+            background-color: #343a40;
+            color: white;
+            text-align: left;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        table tbody tr:last-of-type {
+            border-bottom: 2px solid #343a40;
+        }
+        
+        table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        .login-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-container.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div id="animationText" class="fade-in-out">
+    <h1>Customgraphics presents</h1>
+</div>
+
+<div id="formContainer" class="form-container">
+    <form id="infoForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required><br><br>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required><br><br>
+        <label for="userMessage">Hello, how can I help you?</label>
+        <textarea id="userMessage" name="userMessage" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div id="loginContainer" class="login-container">
+    <form id="loginForm">
+        <label for="password">Enter password to view table:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="loginError" style="color: red; display: none;">Incorrect password. Please try again.</p>
+</div>
+
+<div id="tableContainer" class="table-container">
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const animationText = document.getElementById('animationText');
+        const formContainer = document.getElementById('formContainer');
+        const tableContainer = document.getElementById('tableContainer');
+        const loginContainer = document.getElementById('loginContainer');
+        const infoForm = document.getElementById('infoForm');
+        const userTable = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const correctPassword = 'Shkodran2006';  // Password set here
+
+        animationText.classList.add('show');
+
+        setTimeout(() => {
+            animationText.classList.remove('show');
+            animationText.classList.add('enlarge-shrink');
+            setTimeout(() => {
+                animationText.style.display = 'none';
+                formContainer.classList.add('show');
+            }, 4000);  // Duration of enlarge-shrink animation
+        }, 2000);  // Duration of fade-in animation
+
+        infoForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const userMessage = document.getElementById('userMessage').value;
+
+            const newRow = userTable.insertRow();
+            newRow.insertCell(0).textContent = firstName;
+            newRow.insertCell(1).textContent = lastName;
+            newRow.insertCell(2).textContent = userMessage;
+
+            formContainer.classList.remove('show');
+            loginContainer.classList.add('show');
+        });
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const enteredPassword = document.getElementById('password').value;
+
+            if (enteredPassword === correctPassword) {
+                loginContainer.classList.remove('show');
+                tableContainer.classList.add('show');
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
